@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/e-kucheriavyi/genuary-2025/gen01"
+	"github.com/e-kucheriavyi/genuary-2025/gen02"
 	"github.com/e-kucheriavyi/genuary-2025/menu"
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -38,6 +39,7 @@ func NewGame() *Game {
 		Levels: []Level{
 			m,
 			gen01.New(),
+			gen02.New(),
 		},
 		CurrentLevel: m,
 	}
@@ -78,7 +80,9 @@ func (g *Game) Layout(w, h int) (int, int) {
 	g.W = float32(w)
 	g.H = float32(h)
 
-	g.CurrentLevel.Layout(g.W, g.H)
+	for _, l := range g.Levels {
+		l.Layout(g.W, g.H)
+	}
 
 	return w, h
 }
