@@ -2,6 +2,7 @@ package input
 
 import (
 	"strings"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -11,6 +12,12 @@ import (
 const (
 	clickInputDebounce = 250
 )
+
+var lastClickedAt time.Time
+
+func IsOkToClick() bool {
+	return time.Since(lastClickedAt) > clickInputDebounce * time.Millisecond
+}
 
 func FindHovered(node *la.OutputItem, x, y float32) *la.OutputItem {
 	if strings.HasPrefix(node.Id, "btn_") && !strings.HasSuffix(node.Id, "_disabled") {
@@ -42,28 +49,33 @@ func Collide(node *la.OutputItem, x, y float32) bool {
 }
 
 func IsPressed() bool {
+	if !IsOkToClick() {
+		return false
+	}
+
 	if inpututil.IsMouseButtonJustReleased(ebiten.MouseButton0) {
+		lastClickedAt = time.Now()
 		return true
 	}
 
-	touches := inpututil.AppendJustReleasedTouchIDs(nil)
+	touches := ebiten.AppendTouchIDs(nil)
 
-	return len(touches) > 0
+	if len(touches) > 0 {
+		lastClickedAt = time.Now()
+		return true
+	}
+
+	return false
 }
 
 func CursorPosition() (float32, float32) {
-	x, y := ebiten.CursorPosition()
-	if x != 0 && y != 0 {
+	touches := ebiten.AppendTouchIDs(nil)
+
+	if len(touches) > 0 {
+		x, y := ebiten.TouchPosition(touches[0])
 		return float32(x), float32(y)
 	}
 
-	touches := inpututil.AppendJustReleasedTouchIDs(nil)
-
-	if len(touches) == 0 {
-		return 0, 0
-	}
-
-	x, y = ebiten.TouchPosition(touches[0])
-
+	x, y := ebiten.CursorPosition()
 	return float32(x), float32(y)
 }

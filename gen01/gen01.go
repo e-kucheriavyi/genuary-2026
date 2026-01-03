@@ -56,28 +56,25 @@ func (l *Gen01) Draw(screen *ebiten.Image) {
 			x = x*-1 - TriW*10
 		}
 
-		for {
-			l.DrawTriangle(
-				screen,
-				x,
-				float32(i*TriW),
-			)
-
-			x += TriW
-			if x > l.W {
-				break
-			}
-		}
+		l.DrawTeeth(screen, x, float32(i*TriW))
 	}
 }
 
-func (l *Gen01) DrawTriangle(screen *ebiten.Image, x, y float32) {
+func (l *Gen01) DrawTeeth(screen *ebiten.Image, x, y float32) {
 	p := &vector.Path{}
 
-	p.MoveTo(x, y)
-	p.LineTo(x+TriW, y)
-	p.LineTo(x+TriW/2, y+TriW)
-	p.Close()
+	for {
+		p.MoveTo(x, y)
+		p.LineTo(x+TriW/2, y+TriW)
+		p.LineTo(x+TriW, y)
+		p.Close()
+
+		if x + TriW < l.W {
+			x += TriW
+		} else {
+			break
+		}
+	}
 
 	c := ebiten.ColorScale{}
 

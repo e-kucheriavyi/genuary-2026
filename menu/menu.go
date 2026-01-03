@@ -100,14 +100,21 @@ func (m *Menu) DrawBtn(screen *ebiten.Image, node *la.OutputItem) {
 }
 
 func (m *Menu) Update() error {
+	m.Selected = ""
+
 	x, y := input.CursorPosition()
+
 	m.Hovered = input.FindHovered(m.Root, x, y)
 
-	if input.IsPressed() && m.Hovered != nil {
-		m.Selected = m.Hovered.Id
-	} else {
-		m.Selected = ""
+	if !input.IsPressed() {
+		return nil
 	}
+
+	if m.Hovered == nil {
+		return nil
+	}
+
+	m.Selected = m.Hovered.Id
 
 	return nil
 }

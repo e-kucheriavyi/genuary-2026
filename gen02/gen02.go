@@ -3,6 +3,7 @@ package gen02
 import (
 	"image/color"
 
+	"github.com/e-kucheriavyi/genuary-2025/input"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
@@ -65,7 +66,7 @@ func (l *Gen02) IsLevel(nl string) bool {
 }
 
 func (l *Gen02) NextLevel() string {
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+	if input.IsPressed() {
 		return "menu"
 	}
 	return ""
