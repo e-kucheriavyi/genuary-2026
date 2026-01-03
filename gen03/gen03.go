@@ -71,29 +71,29 @@ func (l *Gen03) Draw(screen *ebiten.Image) {
 		y := l.H/2 - h/2
 
 		vector.StrokeRect(screen, x, y, w, h, 2, fg, true)
+
+		vector.StrokeLine(
+			screen,
+			x,
+			y,
+			x + w,
+			y + h,
+			2,
+			fg,
+			true,
+		)
+		vector.StrokeLine(
+			screen,
+			x + w,
+			y,
+			x,
+			y + h,
+			2,
+			fg,
+			true,
+		)
+
 	}
-
-	vector.StrokeLine(
-		screen,
-		0,
-		0,
-		l.W,
-		l.H,
-		2,
-		fg,
-		true,
-	)
-
-	vector.StrokeLine(
-		screen,
-		l.W,
-		0,
-		0,
-		l.H,
-		2,
-		fg,
-		true,
-	)
 }
 
 func (l *Gen03) Update() error {
