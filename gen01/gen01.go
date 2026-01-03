@@ -8,6 +8,9 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+// 2025-01-01
+// one shape, one color
+
 const (
 	InitialW = 640
 	InitialH = 480
@@ -40,7 +43,7 @@ func (l *Gen01) IsLevel(nl string) bool {
 }
 
 func (l *Gen01) NextLevel() string {
-	if input.IsPressed() {
+	if input.IsPressed() || ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		return "menu"
 	}
 	return ""
@@ -69,7 +72,7 @@ func (l *Gen01) DrawTeeth(screen *ebiten.Image, x, y float32) {
 		p.LineTo(x+TriW, y)
 		p.Close()
 
-		if x + TriW < l.W {
+		if x+TriW < l.W {
 			x += TriW
 		} else {
 			break

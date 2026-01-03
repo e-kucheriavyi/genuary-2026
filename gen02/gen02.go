@@ -8,6 +8,9 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+// 2025-01-02
+// 12 principles of animation
+
 const (
 	InitialW = 640
 	InitialH = 480
@@ -38,7 +41,7 @@ type Gen02 struct {
 }
 
 func lerp(a, b, t float32) float32 {
-	return (a - b) * t
+	return a + (b-a)*t
 }
 
 func New() *Gen02 {
@@ -66,7 +69,7 @@ func (l *Gen02) IsLevel(nl string) bool {
 }
 
 func (l *Gen02) NextLevel() string {
-	if input.IsPressed() {
+	if input.IsPressed() || ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		return "menu"
 	}
 	return ""
@@ -91,10 +94,10 @@ func (l *Gen02) GetBox() (x, y, w, h float32) {
 		p = l.KeyFrames[l.I-1]
 	}
 
-	y = p.Y + lerp(c.Y, p.Y, float32(l.T)/float32(c.D))
-	w = p.W + lerp(c.W, p.W, float32(l.T)/float32(c.D))
-	h = p.H + lerp(c.H, p.H, float32(l.T)/float32(c.D))
-	x = p.X + lerp(c.X, p.X, float32(l.T)/float32(c.D)) - (w / 2)
+	y = lerp(p.Y, c.Y, float32(l.T)/float32(c.D))
+	w = lerp(p.W, c.W, float32(l.T)/float32(c.D))
+	h = lerp(p.H, c.H, float32(l.T)/float32(c.D))
+	x = lerp(p.X, c.X, float32(l.T)/float32(c.D)) - (w / 2)
 
 	return x, y, w, h
 }

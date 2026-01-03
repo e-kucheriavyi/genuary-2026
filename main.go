@@ -5,6 +5,7 @@ import (
 
 	"github.com/e-kucheriavyi/genuary-2025/gen01"
 	"github.com/e-kucheriavyi/genuary-2025/gen02"
+	"github.com/e-kucheriavyi/genuary-2025/gen03"
 	"github.com/e-kucheriavyi/genuary-2025/menu"
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -33,13 +34,18 @@ type Game struct {
 func NewGame() *Game {
 	m := menu.New(InitialW, InitialH)
 
+	g01 := gen01.New()
+	g02 := gen02.New()
+	g03 := gen03.New()
+
 	g := &Game{
 		W: InitialW,
 		H: InitialH,
 		Levels: []Level{
 			m,
-			gen01.New(),
-			gen02.New(),
+			g01,
+			g02,
+			g03,
 		},
 		CurrentLevel: m,
 	}

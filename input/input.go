@@ -16,7 +16,7 @@ const (
 var lastClickedAt time.Time
 
 func IsOkToClick() bool {
-	return time.Since(lastClickedAt) > clickInputDebounce * time.Millisecond
+	return time.Since(lastClickedAt) > clickInputDebounce*time.Millisecond
 }
 
 func FindHovered(node *la.OutputItem, x, y float32) *la.OutputItem {
