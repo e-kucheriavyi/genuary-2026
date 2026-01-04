@@ -2,7 +2,6 @@ package gen04
 
 import (
 	"image/color"
-	"unicode/utf8"
 
 	"github.com/e-kucheriavyi/genuary-2025/input"
 	"github.com/e-kucheriavyi/genuary-2025/text"
@@ -104,8 +103,8 @@ func (l *Gen04) Draw(screen *ebiten.Image) {
 	if l.B {
 		txt := "ква"
 		s := float32(4)
-		x := (l.W / 2) - (float32(utf8.RuneCountInString(txt)) * (text.LetterWidth * s) / 2)
-		text.Write(screen, txt, x, y - text.LetterWidth * s * 2, s, fg)
+		x := (l.W / 2) - (text.LetterWidth * s * 2.5)
+		text.Write(screen, txt, x, y-text.LetterWidth*s*2, s, fg)
 	}
 }
 
