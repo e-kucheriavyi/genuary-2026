@@ -4,6 +4,7 @@ import (
 	"image/color"
 
 	"github.com/e-kucheriavyi/genuary-2025/input"
+	"github.com/e-kucheriavyi/genuary-2025/utils"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
@@ -94,10 +95,10 @@ func (l *Gen02) GetBox() (x, y, w, h float32) {
 		p = l.KeyFrames[l.I-1]
 	}
 
-	y = lerp(p.Y, c.Y, float32(l.T)/float32(c.D))
-	w = lerp(p.W, c.W, float32(l.T)/float32(c.D))
-	h = lerp(p.H, c.H, float32(l.T)/float32(c.D))
-	x = lerp(p.X, c.X, float32(l.T)/float32(c.D)) - (w / 2)
+	y = utils.Lerp(p.Y, c.Y, float32(l.T)/float32(c.D))
+	w = utils.Lerp(p.W, c.W, float32(l.T)/float32(c.D))
+	h = utils.Lerp(p.H, c.H, float32(l.T)/float32(c.D))
+	x = utils.Lerp(p.X, c.X, float32(l.T)/float32(c.D)) - (w / 2)
 
 	return x, y, w, h
 }

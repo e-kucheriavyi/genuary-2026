@@ -27,10 +27,6 @@ type Gen03 struct {
 	D float32
 }
 
-func lerp(a, b, t float32) float32 {
-	return a + (b-a)*t
-}
-
 func New() *Gen03 {
 	l := &Gen03{
 		W: InitialW,
@@ -76,18 +72,18 @@ func (l *Gen03) Draw(screen *ebiten.Image) {
 			screen,
 			x,
 			y,
-			x + w,
-			y + h,
+			x+w,
+			y+h,
 			2,
 			fg,
 			true,
 		)
 		vector.StrokeLine(
 			screen,
-			x + w,
+			x+w,
 			y,
 			x,
-			y + h,
+			y+h,
 			2,
 			fg,
 			true,
