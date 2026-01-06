@@ -84,23 +84,6 @@ func (l *Gen06) Update() error {
 	l.X = x
 	l.Y = y
 
-	r := int(l.W * R)
-	if l.H < l.W {
-		r = int(l.H * R)
-	}
-	l.R = float32(r)
-
-	alphas := image.Point{r * 2, r * 2}
-	a := image.NewAlpha(image.Rectangle{image.Point{}, alphas})
-	for j := range alphas.Y {
-		for i := range alphas.X {
-			d := math.Sqrt(float64((i-r)*(i-r) + (j-r)*(j-r)))
-			b := uint8(max(0, min(0xff, int(3*d*0xff/float64(r))-2*0xff)))
-			a.SetAlpha(i, j, color.Alpha{b})
-		}
-	}
-	spotImage = ebiten.NewImageFromImage(a)
-
 	return nil
 }
 
@@ -154,4 +137,21 @@ func (l *Gen06) Layout(w, h float32) {
 
 	DrawImage(bgImage, w, h, bg, fg)
 	DrawImage(fgImage, w, h, bg, pale)
+
+	r := int(l.W * R)
+	if l.H < l.W {
+		r = int(l.H * R)
+	}
+	l.R = float32(r)
+
+	alphas := image.Point{r * 2, r * 2}
+	a := image.NewAlpha(image.Rectangle{image.Point{}, alphas})
+	for j := range alphas.Y {
+		for i := range alphas.X {
+			d := math.Sqrt(float64((i-r)*(i-r) + (j-r)*(j-r)))
+			b := uint8(max(0, min(0xff, int(3*d*0xff/float64(r))-2*0xff)))
+			a.SetAlpha(i, j, color.Alpha{b})
+		}
+	}
+	spotImage = ebiten.NewImageFromImage(a)
 }
