@@ -6,6 +6,7 @@ import (
 	"math"
 
 	"github.com/e-kucheriavyi/genuary-2025/input"
+	"github.com/e-kucheriavyi/genuary-2025/text"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
@@ -54,8 +55,17 @@ func (l *Gen06) IsLevel(nl string) bool {
 }
 
 func (l *Gen06) NextLevel() string {
-	if input.IsPressed() || ebiten.IsKeyPressed(ebiten.KeyEscape) {
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		return "menu"
+	}
+	if input.IsPressed() {
+		x, y := input.CursorPosition()
+
+		p := float32(text.LetterWidth * 4 * 2)
+
+		if x <= p && y <= p {
+			return "menu"
+		}
 	}
 	return ""
 }
@@ -76,6 +86,8 @@ func (l *Gen06) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{0x00, 0x00, 0x80, 0xff})
 	screen.DrawImage(bgImage, &ebiten.DrawImageOptions{})
 	screen.DrawImage(maskedFgImage, &ebiten.DrawImageOptions{})
+
+	text.DrawLetter(screen, 'x', 10, 10, 4, color.White)
 }
 
 func (l *Gen06) Update() error {
