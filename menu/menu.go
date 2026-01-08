@@ -162,7 +162,7 @@ func (m *Menu) Layout(w, h float32) {
 							btn("04"),
 							btn("05"),
 							btn("06"),
-							btn("07_disabled"),
+							btn("07"),
 						),
 					),
 					la.Node(
