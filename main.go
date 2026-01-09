@@ -70,6 +70,7 @@ func (g *Game) Next(nl string) {
 	for _, l := range g.Levels {
 		if l.IsLevel(nl) {
 			g.CurrentLevel = l
+			g.CurrentLevel.Layout(g.W, g.H)
 			return
 		}
 	}
@@ -95,9 +96,7 @@ func (g *Game) Layout(w, h int) (int, int) {
 	g.W = float32(w)
 	g.H = float32(h)
 
-	for _, l := range g.Levels {
-		l.Layout(g.W, g.H)
-	}
+	g.CurrentLevel.Layout(g.W, g.H)
 
 	return w, h
 }

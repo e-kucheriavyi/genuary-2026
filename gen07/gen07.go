@@ -6,6 +6,7 @@ import (
 
 	"github.com/e-kucheriavyi/genuary-2025/input"
 	"github.com/e-kucheriavyi/genuary-2025/text"
+	"github.com/e-kucheriavyi/genuary-2025/utils"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
@@ -20,21 +21,34 @@ const (
 	lambda   = 200.0
 )
 
-var bg = color.RGBA{0, 0, 0, 255}
-var red = color.RGBA{150, 0, 0, 255}
-var green = color.RGBA{0, 150, 0, 255}
-var gray = color.RGBA{150, 150, 150, 255}
+var (
+	bg    = color.RGBA{0, 0, 0, 255}
+	red   = color.RGBA{150, 0, 0, 255}
+	green = color.RGBA{0, 150, 0, 255}
+	gray  = color.RGBA{150, 150, 150, 255}
+)
+
+var twoPi = math.Pi * 2
+
+var (
+	l1 = text.GetLetterMap('1')
+	l0 = text.GetLetterMap('0')
+)
 
 type Gen07 struct {
-	W float32
-	H float32
-	T float64
+	W      float32
+	H      float32
+	YC     float32
+	S      float32
+	T      float64
+	Offset float64
 }
 
 func New() *Gen07 {
 	l := &Gen07{
 		W: InitialW,
 		H: InitialH,
+		S: 3,
 	}
 
 	return l
@@ -45,56 +59,45 @@ func (l *Gen07) IsLevel(nl string) bool {
 }
 
 func (l *Gen07) NextLevel() string {
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+	if input.IsPressed() || ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		return "menu"
-	}
-	if input.IsPressed() {
-		x, y := input.CursorPosition()
-
-		p := float32(text.LetterWidth * 4 * 2)
-
-		if x <= p && y <= p {
-			return "menu"
-		}
 	}
 	return ""
 }
 
 func (l *Gen07) Draw(screen *ebiten.Image) {
-	vector.FillRect(screen, 0, 0, l.W, l.H, bg, false)
-
-	yCenter := float64(l.H / 2)
-
-	vector.StrokeLine(screen, 0, float32(yCenter), l.W, float32(yCenter), 1, gray, false)
-
-	s := float32(3)
+	vector.StrokeLine(screen, 0, float32(l.YC), l.W, float32(l.YC), 1, gray, false)
 
 	x := float64(0)
 
-	twoPi := 2 * math.Pi
-
 	for {
 		phase := (x / lambda) * twoPi
-		y := float64(yCenter) + math.Sin(phase+l.T)*amp
+		y := float64(l.YC) + math.Sin(phase+l.T)*amp
 
-		char := '0'
+		char := l0
 		c := red
 
-		if y < yCenter {
-			char = '1'
+		if float32(y) < l.YC {
+			char = l1
 			c = green
 		}
 
-		text.DrawLetter(screen, char, float32(x), float32(y), s, c)
+		utils.DrawBitmap(
+			screen,
+			char,
+			float32(x),
+			float32(y),
+			l.S,
+			text.LetterWidth,
+			c,
+		)
 
-		x += float64(text.LetterWidth * s)
+		x += l.Offset
 
 		if x > float64(l.W) {
 			break
 		}
 	}
-
-	text.DrawLetter(screen, 'x', 10, 10, 4, color.White)
 }
 
 func (l *Gen07) Update() error {
@@ -105,4 +108,6 @@ func (l *Gen07) Update() error {
 func (l *Gen07) Layout(w, h float32) {
 	l.W = w
 	l.H = h
+	l.YC = h / 2
+	l.Offset = float64(text.LetterWidth * l.S)
 }
