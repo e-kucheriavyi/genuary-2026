@@ -4,7 +4,6 @@ import (
 	"image/color"
 
 	"github.com/e-kucheriavyi/genuary-2025/input"
-	"github.com/e-kucheriavyi/genuary-2025/text"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
@@ -39,25 +38,17 @@ func (l *Gen08) IsLevel(nl string) bool {
 }
 
 func (l *Gen08) NextLevel() string {
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) || input.IsPressed() {
 		return "menu"
 	}
-	if input.IsPressed() {
-		x, y := input.CursorPosition()
 
-		p := float32(text.LetterWidth * 4 * 2)
-
-		if x <= p && y <= p {
-			return "menu"
-		}
-	}
 	return ""
 }
 
 func (l *Gen08) Draw(screen *ebiten.Image) {
-	vector.FillRect(screen, 0, 0, l.W, l.H, bg, false)
+	screen.Fill(bg)
 
-	text.DrawLetter(screen, 'x', 10, 10, 4, color.White)
+	vector.FillRect(screen, 0, 0, 10, 10, fg, false)
 }
 
 func (l *Gen08) Update() error {

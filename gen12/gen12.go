@@ -56,7 +56,7 @@ func (l *Gen12) Draw(screen *ebiten.Image) {
 	g := ebiten.GeoM{}
 
 	g.Scale(0.99, 0.99)
-	g.Translate(0.1, 0.1)
+	g.Translate(0.01, 0.01)
 
 	opts := &ebiten.DrawImageOptions{GeoM: g}
 

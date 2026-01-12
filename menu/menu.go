@@ -1,13 +1,16 @@
 package menu
 
 import (
+	"fmt"
 	"image/color"
+	"strconv"
 	"strings"
 	"unicode/utf8"
 
 	"github.com/e-kucheriavyi/genuary-2025/input"
 	"github.com/e-kucheriavyi/genuary-2025/text"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 	la "github.com/laranatech/gorana/layout"
 )
@@ -25,8 +28,11 @@ const (
 type Menu struct {
 	W        float32
 	H        float32
+	X        float32
+	Y        float32
 	Root     *la.OutputItem
-	Hovered  *la.OutputItem
+	Focused  string
+	Hovered  string
 	Selected string
 }
 
@@ -74,7 +80,7 @@ func (m *Menu) DrawBtn(screen *ebiten.Image, node *la.OutputItem) {
 
 	if strings.HasSuffix(node.Id, "_disabled") {
 		c = palest
-	} else if m.Hovered != nil && m.Hovered.Id == node.Id {
+	} else if m.Focused == node.Id || m.Hovered == node.Id {
 		c = fg
 	}
 
@@ -104,19 +110,100 @@ func (m *Menu) Update() error {
 
 	x, y := input.CursorPosition()
 
-	m.Hovered = input.FindHovered(m.Root, x, y)
+	m.UpdateKeyboard()
+
+	if x == m.X && y == m.Y {
+		if input.IsPressed() && m.Focused != "" {
+			m.Selected = m.Focused
+		}
+		return nil
+	}
+
+	m.X = x
+	m.Y = y
+
+	hovered := input.FindHovered(m.Root, x, y)
+
+	if hovered != nil {
+		m.Focused = hovered.Id
+	}
 
 	if !input.IsPressed() {
 		return nil
 	}
 
-	if m.Hovered == nil {
+	if m.Focused == "" {
 		return nil
 	}
 
-	m.Selected = m.Hovered.Id
+	m.Selected = m.Focused
 
 	return nil
+}
+
+func (m *Menu) UpdateKeyboard() error {
+	keys := inpututil.AppendJustReleasedKeys(nil)
+
+	for _, key := range keys {
+		switch key {
+		case ebiten.KeyArrowLeft, ebiten.KeyH:
+			return m.Focus(-1)
+		case ebiten.KeyArrowRight, ebiten.KeyL:
+			return m.Focus(+1)
+		case ebiten.KeyArrowUp, ebiten.KeyK:
+			return m.Focus(-7)
+		case ebiten.KeyArrowDown, ebiten.KeyJ:
+			return m.Focus(+7)
+		case ebiten.KeyEnter:
+			m.Selected = m.Focused
+			return nil
+		}
+	}
+	return nil
+}
+
+func (m *Menu) Focus(d int) error {
+	if m.Focused == "" {
+		m.Focused = "btn_01"
+		return nil
+	}
+
+	id := strings.Split(m.Focused, "_")[1]
+	curr, err := strconv.Atoi(id)
+
+	if err != nil {
+		return err
+	}
+
+	curr += d
+
+	if curr <= 0 {
+		curr = 1
+	}
+	if curr > 31 {
+		curr = 31
+	}
+
+	currS := fmt.Sprintf("btn_%02d", curr)
+
+	if d > 0 {
+		d = 1
+	} else {
+		d = -1
+	}
+
+	m.Focused = currS
+
+	if curr >= 31 {
+		curr = 31
+		return nil
+	}
+
+	if !IsDisabled(m.Root, currS) {
+		return nil
+	}
+
+	return m.Focus(d)
 }
 
 func (m *Menu) NextLevel() string {
@@ -171,13 +258,13 @@ func (m *Menu) Layout(w, h float32) {
 						la.Width(la.Grow(1)),
 						la.Height(la.Grow(1)),
 						la.Children(
-							btn("08_disabled"),
+							btn("08"),
 							btn("09_disabled"),
+							btn("10_disabled"),
 							btn("11_disabled"),
 							btn("12"),
 							btn("13_disabled"),
 							btn("14_disabled"),
-							btn("15_disabled"),
 						),
 					),
 					la.Node(
@@ -186,13 +273,13 @@ func (m *Menu) Layout(w, h float32) {
 						la.Width(la.Grow(1)),
 						la.Height(la.Grow(1)),
 						la.Children(
+							btn("15_disabled"),
 							btn("16_disabled"),
 							btn("17_disabled"),
 							btn("18_disabled"),
 							btn("19_disabled"),
 							btn("20_disabled"),
 							btn("21_disabled"),
-							btn("22_disabled"),
 						),
 					),
 					la.Node(
@@ -201,13 +288,13 @@ func (m *Menu) Layout(w, h float32) {
 						la.Width(la.Grow(1)),
 						la.Height(la.Grow(1)),
 						la.Children(
+							btn("22_disabled"),
 							btn("23_disabled"),
 							btn("24_disabled"),
 							btn("25_disabled"),
 							btn("26_disabled"),
 							btn("27_disabled"),
 							btn("28_disabled"),
-							btn("29_disabled"),
 						),
 					),
 					la.Node(
@@ -216,9 +303,9 @@ func (m *Menu) Layout(w, h float32) {
 						la.Width(la.Grow(1)),
 						la.Height(la.Grow(1)),
 						la.Children(
+							btn("29_disabled"),
 							btn("30_disabled"),
 							btn("31_disabled"),
-							la.Node(la.Width(la.Grow(1))),
 							la.Node(la.Width(la.Grow(1))),
 							la.Node(la.Width(la.Grow(1))),
 							la.Node(la.Width(la.Grow(1))),
@@ -233,6 +320,21 @@ func (m *Menu) Layout(w, h float32) {
 	la.Layout(root)
 
 	m.Root = la.Export(root)
+}
+
+func IsDisabled(node *la.OutputItem, id string) bool {
+	if node.Id == id {
+		return false
+	}
+
+	for _, child := range node.Children {
+		d := IsDisabled(child, id)
+		if d == false {
+			return d
+		}
+	}
+
+	return true
 }
 
 func btn(id string) *la.NodeItem {

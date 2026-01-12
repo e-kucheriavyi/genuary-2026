@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"image/png"
 	"log"
+	"os"
+	"time"
 
 	"github.com/e-kucheriavyi/genuary-2025/gen01"
 	"github.com/e-kucheriavyi/genuary-2025/gen02"
@@ -14,6 +18,7 @@ import (
 	"github.com/e-kucheriavyi/genuary-2025/gen12"
 	"github.com/e-kucheriavyi/genuary-2025/menu"
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type Level interface {
@@ -35,6 +40,9 @@ type Game struct {
 	Menu         *menu.Menu
 	Levels       []Level
 	CurrentLevel Level
+	I            int
+	Recording    bool
+	RecordAt     time.Time
 }
 
 func NewGame() *Game {
@@ -85,6 +93,12 @@ func (g *Game) Update() error {
 		return err
 	}
 
+	g.ToggleRecording()
+
+	if g.Recording {
+		g.I += 1
+	}
+
 	g.Next(g.CurrentLevel.NextLevel())
 
 	return nil
@@ -92,6 +106,43 @@ func (g *Game) Update() error {
 
 func (g *Game) Draw(screen *ebiten.Image) {
 	g.CurrentLevel.Draw(screen)
+
+	if g.Recording {
+		g.Record(screen)
+	}
+}
+
+func (g *Game) Record(screen *ebiten.Image) {
+	dir := fmt.Sprintf("dist/%d", g.RecordAt.Unix())
+	os.MkdirAll(dir, 0777)
+	f, err := os.Create(fmt.Sprintf("%s/%06d.png", dir, g.I))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err = png.Encode(f, screen); err != nil {
+		f.Close()
+		log.Fatal(err)
+	}
+}
+
+func (g *Game) ToggleRecording() {
+	keys := inpututil.AppendJustReleasedKeys(nil)
+
+	for _, key := range keys {
+		if key != ebiten.KeyR {
+			continue
+		}
+
+		g.Recording = !g.Recording
+		g.I = 0
+
+		if g.Recording {
+			g.RecordAt = time.Now()
+		}
+		return
+	}
 }
 
 func (g *Game) Layout(w, h int) (int, int) {
