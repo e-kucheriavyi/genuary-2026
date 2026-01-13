@@ -16,6 +16,7 @@ import (
 	"github.com/e-kucheriavyi/genuary-2025/gen07"
 	"github.com/e-kucheriavyi/genuary-2025/gen08"
 	"github.com/e-kucheriavyi/genuary-2025/gen12"
+	"github.com/e-kucheriavyi/genuary-2025/gen13"
 	"github.com/e-kucheriavyi/genuary-2025/menu"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -57,6 +58,7 @@ func NewGame() *Game {
 	g07 := gen07.New()
 	g08 := gen08.New()
 	g12 := gen12.New()
+	g13 := gen13.New()
 
 	g := &Game{
 		W: InitialW,
@@ -64,7 +66,7 @@ func NewGame() *Game {
 		Levels: []Level{
 			m,
 			g01, g02, g03, g04, g05, g06, g07,
-			g08, g12,
+			g08, g12, g13,
 		},
 		CurrentLevel: m,
 	}
