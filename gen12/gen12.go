@@ -61,6 +61,7 @@ func (l *Gen12) Draw(screen *ebiten.Image) {
 
 	screen.DrawImage(l.Img, opts)
 
+	l.Img = nil
 	l.Img = ebiten.NewImageFromImage(screen)
 
 	s := l.W * S
