@@ -10,7 +10,7 @@ import (
 )
 
 // 2025-01-19
-// City
+// 16x16
 
 const (
 	InitialW = 640
