@@ -15,13 +15,13 @@ import (
 const (
 	InitialW = 640
 	InitialH = 480
-	Size = 0.2
+	Size     = 0.2
 )
 
 var (
-	bg = color.RGBA{0, 0, 0, 255}
+	bg   = color.RGBA{0, 0, 0, 255}
 	pale = color.RGBA{0, 100, 0, 255}
-	fg = color.RGBA{0, 150, 0, 255}
+	fg   = color.RGBA{0, 150, 0, 255}
 )
 
 type Point struct {
@@ -30,10 +30,10 @@ type Point struct {
 }
 
 type Gen15 struct {
-	W float32
-	H float32
-	X float32
-	Y float32
+	W      float32
+	H      float32
+	X      float32
+	Y      float32
 	Points []*Point
 }
 
