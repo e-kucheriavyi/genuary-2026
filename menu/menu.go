@@ -290,7 +290,7 @@ func (m *Menu) Layout(w, h float32) {
 						la.Children(
 							btn("22_disabled"),
 							btn("23_disabled"),
-							btn("24_disabled"),
+							btn("24"),
 							btn("25_disabled"),
 							btn("26_disabled"),
 							btn("27_disabled"),
