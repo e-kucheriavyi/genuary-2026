@@ -23,6 +23,7 @@ import (
 	"github.com/e-kucheriavyi/genuary-2025/gen19"
 	"github.com/e-kucheriavyi/genuary-2025/gen20"
 	"github.com/e-kucheriavyi/genuary-2025/gen21"
+	"github.com/e-kucheriavyi/genuary-2025/gen23"
 	"github.com/e-kucheriavyi/genuary-2025/gen24"
 	"github.com/e-kucheriavyi/genuary-2025/menu"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -72,6 +73,7 @@ func NewGame() *Game {
 	g19 := gen19.New()
 	g20 := gen20.New()
 	g21 := gen21.New()
+	g23 := gen23.New()
 	g24 := gen24.New()
 
 	g := &Game{
@@ -82,7 +84,7 @@ func NewGame() *Game {
 			g01, g02, g03, g04, g05, g06, g07,
 			g08, g09, g10, g12, g13,
 			g15, g19, g20, g21,
-			g24,
+			g23, g24,
 		},
 		CurrentLevel: m,
 	}
