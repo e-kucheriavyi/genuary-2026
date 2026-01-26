@@ -17,10 +17,10 @@ const (
 )
 
 var (
-	bg = color.RGBA{255, 255, 255, 255}
-	red = color.RGBA{255, 0, 0, 100}
+	bg    = color.RGBA{255, 255, 255, 255}
+	red   = color.RGBA{255, 0, 0, 100}
 	green = color.RGBA{0, 255, 0, 100}
-	blue = color.RGBA{0, 255, 0, 100}
+	blue  = color.RGBA{0, 255, 0, 100}
 )
 
 type Gen23 struct {
@@ -59,9 +59,9 @@ func (l *Gen23) Draw(screen *ebiten.Image) {
 	g := color.RGBA{0, 255, 0, l.G}
 	b := color.RGBA{0, 0, 255, l.B}
 
-	vector.FillRect(screen, 0, 0, l.W * 0.40, l.H, r, false)
-	vector.FillRect(screen, l.W * 0.33, 0, l.W * 0.40, l.H, g, false)
-	vector.FillRect(screen, l.W * 0.66, 0, l.W * 0.40, l.H, b, false)
+	vector.FillRect(screen, 0, 0, l.W*0.40, l.H, r, false)
+	vector.FillRect(screen, l.W*0.33, 0, l.W*0.40, l.H, g, false)
+	vector.FillRect(screen, l.W*0.66, 0, l.W*0.40, l.H, b, false)
 }
 
 func (l *Gen23) Update() error {
