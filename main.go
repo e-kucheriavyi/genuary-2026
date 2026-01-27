@@ -17,6 +17,7 @@ import (
 	"github.com/e-kucheriavyi/genuary-2025/gen08"
 	"github.com/e-kucheriavyi/genuary-2025/gen09"
 	"github.com/e-kucheriavyi/genuary-2025/gen10"
+	"github.com/e-kucheriavyi/genuary-2025/gen11"
 	"github.com/e-kucheriavyi/genuary-2025/gen12"
 	"github.com/e-kucheriavyi/genuary-2025/gen13"
 	"github.com/e-kucheriavyi/genuary-2025/gen15"
@@ -71,6 +72,7 @@ func NewGame() *Game {
 	g08 := gen08.New()
 	g09 := gen09.New()
 	g10 := gen10.New()
+	g11 := gen11.New()
 	g12 := gen12.New()
 	g13 := gen13.New()
 	g15 := gen15.New()
@@ -90,7 +92,7 @@ func NewGame() *Game {
 		Levels: []Level{
 			m,
 			g01, g02, g03, g04, g05, g06, g07,
-			g08, g09, g10, g12, g13,
+			g08, g09, g10, g11, g12, g13,
 			g15, g16, g17, g19, g20, g21,
 			g22, g23, g24, g27,
 		},
