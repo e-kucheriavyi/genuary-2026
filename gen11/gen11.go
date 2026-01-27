@@ -52,10 +52,10 @@ func (l *Gen11) Draw(screen *ebiten.Image) {
 	gap := float32(64)
 	s := float32(6)
 
-	for i := range int(l.H/gap)+1 {
-		y := float32(i) * gap + gap*0.1
-		for j := range int(l.W/gap)+1 {
-			x := float32(j) * gap + gap*0.1
+	for i := range int(l.H/gap) + 1 {
+		y := float32(i)*gap + gap*0.1
+		for j := range int(l.W/gap) + 1 {
+			x := float32(j)*gap + gap*0.1
 			l := '0'
 			if rand.Float32() > 0.5 {
 				l = '1'
