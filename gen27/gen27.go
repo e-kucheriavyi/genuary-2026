@@ -78,6 +78,9 @@ func (l *Gen27) Draw(screen *ebiten.Image) {
 	drawOpts := &vector.DrawPathOptions{ColorScale: c}
 
 	vector.StrokePath(screen, p, strokeOpts, drawOpts)
+
+	vector.FillRect(screen, l.X+6, yc-3, 3, 4, bg, false)
+	vector.FillRect(screen, l.X, yc-3, 4, 4, bg, false)
 }
 
 func (l *Gen27) Update() error {
