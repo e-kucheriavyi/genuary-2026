@@ -1,0 +1,8 @@
+//kage:unit pixels
+
+package main
+
+func Fragment(position vec4) vec4 {
+	return vec4(position.x/255, position.y/255, position.x/255, position.y/255)
+}
+
