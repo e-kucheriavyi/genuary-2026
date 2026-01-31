@@ -292,7 +292,7 @@ func (m *Menu) Layout(w, h float32) {
 							btn("23"),
 							btn("24"),
 							btn("25_disabled"),
-							btn("26_disabled"),
+							btn("26"),
 							btn("27"),
 							btn("28_disabled"),
 						),
