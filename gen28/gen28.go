@@ -65,8 +65,6 @@ func (l *Gen28) Draw(screen *ebiten.Image) {
 	}
 
 	l.DrawNode(screen, l.Root)
-
-	vector.FillRect(screen, 0, 0, 10, 10, fg, false)
 }
 
 func (l *Gen28) DrawNode(screen *ebiten.Image, node *la.OutputItem) {
