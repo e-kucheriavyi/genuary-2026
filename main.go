@@ -31,6 +31,7 @@ import (
 	"github.com/e-kucheriavyi/genuary-2025/gen24"
 	"github.com/e-kucheriavyi/genuary-2025/gen26"
 	"github.com/e-kucheriavyi/genuary-2025/gen27"
+	"github.com/e-kucheriavyi/genuary-2025/gen28"
 	"github.com/e-kucheriavyi/genuary-2025/gen30"
 	"github.com/e-kucheriavyi/genuary-2025/gen31"
 	"github.com/e-kucheriavyi/genuary-2025/menu"
@@ -89,6 +90,7 @@ func NewGame() *Game {
 	g24 := gen24.New()
 	g26 := gen26.New()
 	g27 := gen27.New()
+	g28 := gen28.New()
 	g30 := gen30.New()
 	g31 := gen31.New()
 
@@ -100,7 +102,7 @@ func NewGame() *Game {
 			g01, g02, g03, g04, g05, g06, g07,
 			g08, g09, g10, g11, g12, g13,
 			g15, g16, g17, g19, g20, g21,
-			g22, g23, g24, g26, g27,
+			g22, g23, g24, g26, g27, g28,
 			g30, g31,
 		},
 		CurrentLevel: m,
